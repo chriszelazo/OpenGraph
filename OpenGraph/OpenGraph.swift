@@ -3,7 +3,7 @@ import Foundation
 public struct OpenGraph {
     fileprivate let source: [OpenGraphMetadata: String]
     
-    public static func fetch(url: URL, completion: @escaping (OpenGraph?, Error?) -> Void) {
+    public static func fetch(url: URL, completion: @escaping (OpenGraph?, Error?) -> Void) -> URLSessionTask? {
         let configuration = URLSessionConfiguration.default
         let session = URLSession(configuration: configuration)
         
@@ -12,9 +12,10 @@ public struct OpenGraph {
         })
         
         task.resume()
+        return task
     }
     
-    public static func fetch(url: URL, headers: [String:String], completion: @escaping (OpenGraph?, Error?) -> Void) {
+    public static func fetch(url: URL, headers: [String:String], completion: @escaping (OpenGraph?, Error?) -> Void) -> URLSessionTask? {
         
         var mutableURLRequest = URLRequest(url: url)
         for hkey in headers.keys {
@@ -32,6 +33,7 @@ public struct OpenGraph {
         }) 
         
         task.resume()
+        return task
     }
     
     private static func handleFetchResult(data: Data?, response: URLResponse?, error: Error?, callback: @escaping (OpenGraph?, Error?) -> Void){
